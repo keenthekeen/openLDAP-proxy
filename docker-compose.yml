@@ -5,11 +5,10 @@ sla_openldap_proxy:
   restart: always
   hostname: ${HOSTNAME}
   ports:
-    - "389:389"
     - "636:636"
   volumes:
     - open-ldap-proxy-data:/root/openldap_proxy/data
-  env_file: ./sla_openldap_proxy.env
+  env_file: stack.env
   environment:
     - "DOCKER_HOST_FQDN=${HOSTNAME}"
     - "DOCKER_HOST_MAC=${MAC_ADDRESS}"
