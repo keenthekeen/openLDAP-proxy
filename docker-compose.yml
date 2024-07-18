@@ -1,19 +1,23 @@
-sla_openldap_proxy:
-  build:
-    context: ./
-    dockerfile: Dockerfile
-  pull_policy: build
-  image: sla_openldap_proxy
-  container_name: sla_openldap_proxy
-  restart: always
-  hostname: ${HOSTNAME}
-  ports:
-    - "636:636"
-  volumes:
-    - open-ldap-proxy-data:/root/openldap_proxy/data
-  env_file: stack.env
-  environment:
-    - "DOCKER_HOST_FQDN=${HOSTNAME}"
-    # - "DOCKER_HOST_MAC=${MAC_ADDRESS}"
-  command: bash -l -c "cd /root/openldap_proxy && exec /usr/sbin/slapd -h 'ldap:/// ldapi:/// ldaps:///' -g ldap -u ldap -d 256"
+services:
+  sla_openldap_proxy:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    pull_policy: build
+    image: sla_openldap_proxy
+    container_name: sla_openldap_proxy
+    restart: always
+    hostname: ${HOSTNAME}
+    ports:
+      - "636:636"
+    volumes:
+      - open-ldap-proxy-data:/root/openldap_proxy/data
+    env_file: stack.env
+    environment:
+      - "DOCKER_HOST_FQDN=${HOSTNAME}"
+      # - "DOCKER_HOST_MAC=${MAC_ADDRESS}"
+    command: bash -l -c "cd /root/openldap_proxy && exec /usr/sbin/slapd -h 'ldap:/// ldapi:/// ldaps:///' -g ldap -u ldap -d 256"
 
+volumes:
+    open-ldap-proxy-data:
+        driver: local
