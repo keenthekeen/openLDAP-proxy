@@ -1,6 +1,9 @@
 sla_openldap_proxy:
-  image: "${DTR}/${ORG}/sla-openldap-proxy:${RELEASE}"
-  # image: sla_openldap_proxy:latest
+  build:
+    context: ./
+    dockerfile: Dockerfile
+  pull_policy: build
+  image: sla_openldap_proxy
   container_name: sla_openldap_proxy
   restart: always
   hostname: ${HOSTNAME}
@@ -11,6 +14,6 @@ sla_openldap_proxy:
   env_file: stack.env
   environment:
     - "DOCKER_HOST_FQDN=${HOSTNAME}"
-    - "DOCKER_HOST_MAC=${MAC_ADDRESS}"
+    # - "DOCKER_HOST_MAC=${MAC_ADDRESS}"
   command: bash -l -c "cd /root/openldap_proxy && exec /usr/sbin/slapd -h 'ldap:/// ldapi:/// ldaps:///' -g ldap -u ldap -d 256"
 
